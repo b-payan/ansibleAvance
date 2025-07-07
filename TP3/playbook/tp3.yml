@@ -34,6 +34,14 @@
 
     - name: Copy index.html if apache2 is installed
       ansible.builtin.template:
+        src: ../files/day.j2
+        dest: /etc/jour
+        mode: '0644'
+      notify: Restart nginx
+      when: "'nginx' in ansible_facts.packages"
+
+    - name: Copy day if apache2 is installed
+      ansible.builtin.template:
         src: ../files/index.html.j2
         dest: /var/www/html/index.html
         mode: '0644'
@@ -73,12 +81,20 @@
         state: present
       when: ansible_distribution == "Ubuntu"
 
-    - name: Copy index.html if apache2 is installed
+    - name: Copy index.html if nginx is installed
       ansible.builtin.template:
         src: ../files/index.html.j2
         dest: /var/www/html/index.html
         mode: '0644'
-      notify: Restart apache
+      notify: Restart nginx
+      when: "'nginx' in ansible_facts.packages"
+
+    - name: Copy day if nginx is installed
+      ansible.builtin.template:
+        src: ../files/day.j2
+        dest: /etc/jour
+        mode: '0644'
+      notify: Restart nginx
       when: "'nginx' in ansible_facts.packages"
 
     - name: start nginx
@@ -88,7 +104,7 @@
       when: "'nginx' in ansible_facts.packages"
       
   handlers:
-    - name: Restart apache
+    - name: Restart nginx
       ansible.builtin.service:
         name: nginx
-        state: restarted  
+        state: restarted

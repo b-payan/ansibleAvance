@@ -1,0 +1,14 @@
+{% if now(utc=true,fmt='%d') | int is divisibleby 2 %}
+pair
+{% else %}
+impair
+{% endif %}
+ et 
+{% if now(utc=true,fmt='%H') | int  > 12 %}
+plus tard que midi
+{% else %}
+avant midi
+{% endif %}
+
+
+
