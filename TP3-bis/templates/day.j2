@@ -1,0 +1,18 @@
+{% set isPairDay = ansible_date_time.day | int % 2 == 0 %}
+{% set isHourGreaterThan12 = ansible_date_time.hour | int > 12 %}
+
+{% if (isPairDay and not isHourGreaterThan12) %}
+Aujourd'hui est un jour pair ({{ ansible_date_time.day }}) et il est plus tôt que midi, il est ({{ ansible_date_time.hour }}) .
+{% endif %}
+
+{% if ( not isPairDay and not isHourGreaterThan12) %}
+Aujourd'hui est un jour impair ({{ ansible_date_time.day }}) et il est plus tôt que midi, il est ({{ ansible_date_time.hour }}) .
+{% endif %}
+
+{% if (isPairDay and isHourGreaterThan12) %}
+Aujourd'hui est un jour pair ({{ ansible_date_time.day }}) et il est plus tard que midi, il est ({{ ansible_date_time.hour }}) .
+{% endif %}
+
+{% if ( not isPairDay and isHourGreaterThan12)%}
+Aujourd'hui est un jour impair ({{ ansible_date_time.day }}) et il est plus tard que midi, il est ({{ ansible_date_time.hour }}) .
+{% endif %}
