@@ -1,2 +1,2 @@
 Execution du playbook :
-ansible-playbook -i inventory/host playbook/apache2.yml
+ansible-playbook -i inventory/host playbook/install.yml
