@@ -1,0 +1,47 @@
+---
+- name: Install apache2
+  hosts: all
+  remote_user: root
+  become: true
+  become_user: root
+
+  tasks:
+    - name: Install package
+      ansible.builtin.apt:
+        update_cache: true
+        name: "{{ item }}"
+        state: present
+      loop:
+        - '{{ package_install }}'
+
+    - name: Install ufw
+      ansible.builtin.apt:
+        update_cache: true
+        name: ufw
+        state: present
+      when: ansible_os_familly == "ubuntu"
+
+    - name: Gather the rpm package facts
+      ansible.builtin.package_facts:
+        manager: auto
+
+    - name: start apache2
+      ansible.builtin.service:
+        name: apache2
+        state: started
+      when: "'apache2' in ansible_facts.packages"
+
+    - name: Copy index.html if apache2 is installed
+      ansible.builtin.copy:
+        src: ../files/index.html
+        dest: /var/www/html/index.html
+        mode: '0644'
+      when: "'apache2' in ansible_facts.packages"
+
+    - name: start nginx
+      ansible.builtin.service:
+        name: nginx
+        state: started
+      when: "'nginx' in ansible_facts.packages"
+
+    
