@@ -10,11 +10,5 @@
 [nginx]
 10.0.0.65
 
-[apache:vars]
-package_install=[apache2,mysql-server]
-
-[nginx:vars]
-package_install=[git,nginx,cowsay]
-
 [all:vars]
 ansible_user=root
