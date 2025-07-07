@@ -1,0 +1,19 @@
+---
+- name: Install apache2
+  hosts: apache
+  remote_user: root
+  become: true
+  become_user: root
+
+  tasks:
+    - name: Install apache
+      ansible.builtin.apt:
+        name: apache2
+        state: present
+
+    - name: Modify index.html
+      ansible.builtin.lineinfile:
+        state: present
+        regexp: '^  </body>'
+        line: 'TEST  </body>'
+        path: /var/www/html/index.html
