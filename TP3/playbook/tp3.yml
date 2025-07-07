@@ -37,10 +37,8 @@
         src: ../files/day.j2
         dest: /etc/jour
         mode: '0644'
-      notify: Restart nginx
-      when: "'nginx' in ansible_facts.packages"
 
-    - name: Copy day if apache2 is installed
+    - name: Copy index if apache2 is installed
       ansible.builtin.template:
         src: ../files/index.html.j2
         dest: /var/www/html/index.html
@@ -94,8 +92,6 @@
         src: ../files/day.j2
         dest: /etc/jour
         mode: '0644'
-      notify: Restart nginx
-      when: "'nginx' in ansible_facts.packages"
 
     - name: start nginx
       ansible.builtin.service:
