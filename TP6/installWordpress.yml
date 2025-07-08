@@ -5,8 +5,17 @@
   become: true
   become_user: root
 
+  vars_files:
+    - vars/main.yml
+
   roles:
     - geerlingguy.apache
+
+  handlers:
+    - name: Restart Apache
+      ansible.builtin.service:
+        name: apache2
+        state: restarted
 
   tasks:
     - name: Dependencies Install
@@ -29,7 +38,7 @@
 
     - name: Recursively create directory
       ansible.builtin.file:
-        path: "{{apache_vhosts.documentroot}}"
+        path: "/var/www/"
         state: directory
         recurse: yes
         owner: root
@@ -41,8 +50,15 @@
         dest: /tmp/wordpress-latest.tar.gz
         mode: '0440'
 
-    - name: Extract wordpress-latest.tar.gz into "{{apache_vhosts.documentroot}}"
+    - name: Extract wordpress-latest.tar.gz into "/var/www/"
       ansible.builtin.unarchive:
         src: /tmp/wordpress-latest.tar.gz
-        dest: "{{apache_vhosts.documentroot}}"
-        notify: Reload Apache
+        dest: "/var/www/"
+        remote_src: yes
+      notify: ["Restart Apache"] 
+
+    - name: Copy wp-config.php
+      ansible.builtin.template:
+        src: wp-config.php.j2
+        dest: "{{ apache_vhosts[0].documentroot }}/wp-config.php"
+        mode: '0644'

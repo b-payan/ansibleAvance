@@ -8,3 +8,6 @@ ansible-playbook -i inventory/host tp6.yml --tags wordpress
 Test
 cat /etc/last_changed
 
+Connection a wordpress
+http://localhost/
+
