@@ -1,0 +1,8 @@
+---
+- name: Install mysql
+  ansible.builtin.import_playbook: installMySqlServer.yml
+  tags: mysql
+
+- name: Install wordpress
+  ansible.builtin.import_playbook: installWordpress.yml
+  tags: wordpress

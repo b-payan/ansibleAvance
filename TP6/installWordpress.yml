@@ -1,0 +1,27 @@
+---
+- name: Install mySql
+  hosts: web
+  remote_user: root
+  become: true
+  become_user: root
+
+  roles:
+    - geerlingguy.apache
+
+  tasks:
+    - name: Dependencies Install
+      ansible.builtin.apt:
+        update_cache: true
+        name:
+          - php
+          - php-mysql
+          - libapache2-mod-php
+          - php-cli
+          - php-curl
+          - php-gd
+          - php-mbstring
+          - php-xml
+          - php-xmlrpc
+        state: present
+
+  

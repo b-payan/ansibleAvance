@@ -1,0 +1,7 @@
+---
+roles:
+  - name: geerlingguy.mysql
+    version: 5.0.2
+
+  - name: geerlingguy.apache
+    version: 4.0.0
