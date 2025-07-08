@@ -1,0 +1,15 @@
+---
+- name: Installer et configurer node[1-3]
+  ansible.builtin.import_playbook: tp3.yml
+
+- name: Installer docker sur node 1
+  ansible.builtin.import_playbook: tp4.yml
+
+- name: Update file with date and hours
+  hosts: node1
+  remote_user: root
+  become: true
+  become_user: root
+
+  tasks:
+    - import_tasks: lastUpdateFile.yml
