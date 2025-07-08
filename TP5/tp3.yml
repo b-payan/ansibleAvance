@@ -40,7 +40,7 @@
 
     - name: Copy index.html if apache2 or nginx is installed
       ansible.builtin.template:
-        src: ../templates/index.html.j2
+        src: index.html.j2
         dest: /var/www/html/index.html
         mode: '0644'
       when: "'apache2' in ansible_facts.packages or 'nginx' in ansible_facts.packages"
@@ -60,6 +60,6 @@
 
     - name: Copy day
       ansible.builtin.template:
-        src: ../templates/day.j2
+        src: day.j2
         dest: /etc/jour
         mode: '0644'

@@ -1,6 +1,6 @@
 ---
 - name: Update file with date and hours
   ansible.builtin.template:
-    src: ../templates/last_changed.j2
+    src: last_changed.j2
     dest: /etc/last_changed
     mode: '0644'
