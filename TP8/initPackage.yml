@@ -1,0 +1,13 @@
+---
+- name: Installer docker sur node 1
+  hosts: node1
+  remote_user: root
+  become: true
+  become_user: root
+
+  vars:
+    docker_users:
+      - ambient-user
+
+  roles:
+    - geerlingguy.docker

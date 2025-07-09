@@ -1,0 +1,26 @@
+---
+- name: Import de tp3 & 4
+  hosts: all
+  remote_user: vagrant
+  become: true
+  become_user: root
+
+  roles:
+    - geerlingguy.docker
+    - geerlingguy.clamav
+
+  tasks:
+    - name: Import tp3
+      ansible.builtin.include_tasks: tp3.yml
+
+    - name: Include vars of tp4.yml
+      ansible.builtin.include_vars:
+        file: tp4.yml
+
+    - name: Write date time in /etc/last_changed
+      ansible.builtin.lineinfile:
+        path: /etc/last_changed
+        line: "{{ ansible_date_time.date }} {{ ansible_date_time.hour }}"
+        mode: '0644'
+        create: true
+      tags: datetime

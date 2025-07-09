@@ -50,7 +50,7 @@
       set_fact:
         current_date: "{{ meteoData.json.current.time }}"
         current_temp: "{{ meteoData.json.current.temperature_2m }}"
-        current_hour: "{{ meteoData.json.current.time| split('T') | last | split(':')| first }}"
+        current_hour: "{{ meteoData.json.current.time | split('T') | last | split(':') | first }}"
 
     - name: Affiche meteo var
       ansible.builtin.debug:
@@ -60,8 +60,15 @@
       set_fact:
         setDateCsv: "2025-02-12T{{ current_hour }}:00"
 
+    - name: setMessage
+      ansible.builtin.set_fact:
+        message: "{{ (dict[setDateCsv] < current_temp) | ternary('il fait plus chaud', 'il fait plus froid') }} à Metz"
+
     - name: Affiche meteo var
       ansible.builtin.debug:
-        msg: "{{ (dict[setDateCsv] < current_temp) | ternary('il fait plus chaud', 'il fait plus froid') }} à Metz"
+        msg: "{{ message }}"
 
+    - name: Affiche message revert
+      ansible.builtin.debug:
+        msg: "revert: {{ message | reverse_string_perso }}"
     
