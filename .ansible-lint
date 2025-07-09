@@ -1,0 +1,13 @@
+skip_list:
+    - experimental
+warn_list:
+  - yaml
+verbosity: 1
+offline: true
+exclude_paths:
+  - TP0
+  - TP1
+  - TP2
+  - TP3
+  - TP3-bis
+  - TP4
