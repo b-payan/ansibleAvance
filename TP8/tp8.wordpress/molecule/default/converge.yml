@@ -4,9 +4,15 @@
 
   pre_tasks:
     - name: Update apt cache.
-      apt: update_cache=yes cache_valid_time=600
-      when: ansible_os_family == 'Debian'
+      ansible.builtin.apt: 
+        update_cache: yes
+        cache_valid_time: 600
       changed_when: false
 
+    - name: Install unzip
+      ansible.builtin.apt:
+        name: unzip
+        state: present
+        
   roles:
     - tp8.wordpress

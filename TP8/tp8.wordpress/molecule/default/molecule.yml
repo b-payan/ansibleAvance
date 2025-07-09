@@ -1,24 +1,25 @@
 ---
-role_name: 1
 dependency:
-    name: galaxy
-    options:
-      ignore-errors: true
+  name: galaxy
 driver:
   name: docker
 platforms:
-  - name: ubuntu24
+  - name: wordpress-ubuntu2404
     image: "geerlingguy/docker-ubuntu2404-ansible:latest"
-    command: ${MOLECULE_DOCKER_COMMAND:-""}
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
-    cgroupns_mode: host
     privileged: true
     pre_build_image: true
+    cgroupns_mode: host
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    published_ports:
+      - 80/tcp
+
 provisioner:
-    name: ansible
-    playbooks:
-        converge: ${MOLECULE_PLAYBOOK:-converge.yml}
-    # you might want to add your own variables here based on what provisioning
-    # you are doing like:
-    # image: quay.io/centos/centos:stream8
+  name: ansible
+  config_options:
+    defaults:
+      remote_tmp: /tmp/.ansible-${USER}/tmp/
+
+verifier:
+  name: ansible
