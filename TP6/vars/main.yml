@@ -7,7 +7,7 @@ mysql_users:
   - name: wordpress
     host: "%"
     password: similarly-secure-password
-    priv: "wordpress.*:SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER"
+    priv: "wordpress.*:ALL"
 
 apache_listen_port: 80
 apache_vhosts:
