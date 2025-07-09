@@ -11,3 +11,6 @@ cat /etc/last_changed
 Connection a wordpress
 http://localhost/
 
+Mise en place du vault:
+ansible-vault encrypt vaults/db_secret.yml
+New Vault password: P@ssword
