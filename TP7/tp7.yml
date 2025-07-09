@@ -1,0 +1,55 @@
+---
+- name: TP7
+  hosts: localhost
+  remote_user: root
+  become: true
+  become_user: root
+
+  tasks:
+    - name: Chargement du fichier csv et affichage de celui-ci
+      community.general.read_csv:
+        path: files/temperature.csv
+      register: temperature
+      delegate_to: localhost
+
+    - name: Compte le nombre de donnée
+      ansible.builtin.debug:
+        msg: 'raw_count {{ temperature.list | count }}'
+
+    - name: Transforme sous forme de dictionnaire
+      set_fact:
+        dict: '{{ temperature.list | items2dict(key_name="time", value_name="temperature") }}'
+
+    - name: Affiche sous forme de dictionnaire
+      ansible.builtin.debug:
+        msg: 'temperature_dict {{ dict }}'
+   
+    - name: Tri en fonction par date et de façon unique
+      set_fact:
+        sorted_dict: '{{ dict | dictsort | unique }}'
+
+    - name: Affiche le contenu de temperature
+      ansible.builtin.debug:
+        msg: 'temperature_sort {{ sorted_dict }}'
+
+    - name: Compte le resultat
+      ansible.builtin.debug:
+        msg: 'temperature_count {{ sorted_dict | count }}'
+
+    - name: Get open meteo info
+      ansible.builtin.uri:
+        url: "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m"
+        return_content: true
+      register: meteoData
+
+    - name: Affiche meteo meteoData
+      ansible.builtin.debug:
+        msg: 'meteoData {{ meteoData.json.current }}'
+
+    - name: set meteo vars
+      set_fact:
+        current_date: "{{ meteoData.json.current.time }}"
+        current_temp: "{{ meteoData.json.current.temperature }}"
+        current_hour: "{{ meteoData.json.current.time| split('T') }}
+
+    
