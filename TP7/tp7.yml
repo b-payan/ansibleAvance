@@ -49,7 +49,19 @@
     - name: set meteo vars
       set_fact:
         current_date: "{{ meteoData.json.current.time }}"
-        current_temp: "{{ meteoData.json.current.temperature }}"
-        current_hour: "{{ meteoData.json.current.time| split('T') }}
+        current_temp: "{{ meteoData.json.current.temperature_2m }}"
+        current_hour: "{{ meteoData.json.current.time| split('T') | last | split(':')| first }}"
+
+    - name: Affiche meteo var
+      ansible.builtin.debug:
+        msg: 'currentTime: {{ current_date }} -> temp: {{ current_temp }} -> hour: {{ current_hour }}'
+
+    - name: setDateCsv
+      set_fact:
+        setDateCsv: "2025-02-12T{{ current_hour }}:00"
+
+    - name: Affiche meteo var
+      ansible.builtin.debug:
+        msg: "{{ (dict[setDateCsv] < current_temp) | ternary('il fait plus chaud', 'il fait plus froid') }} à Metz"
 
     
