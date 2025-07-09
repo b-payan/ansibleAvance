@@ -14,3 +14,7 @@ http://localhost/
 Mise en place du vault:
 ansible-vault encrypt vaults/db_secret.yml
 New Vault password: P@ssword
+
+Execution playbook, avec vault :
+ansible-playbook -i inventory/host tp6.yml --ask-vault-password 
+
